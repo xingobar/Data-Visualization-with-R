@@ -106,6 +106,48 @@ scale_fill_distiller(palette = 'YlGnBu')
 ###### 
 
 
+## top 20 publisher
+
+top_publisher = df %>% group_by(Publisher) %>% 
+                summarise(Count = n()) %>% 
+                arrange(desc(Count)) %>% top_n(20)
+
+ggplot(data=top_publisher,aes(x=Publisher,y=Count,fill=Count)) +
+geom_bar(colour='black',stat='identity') + 
+theme_bw() +
+ggtitle('Top 20 Publisher') + 
+theme(axis.text.x = element_text(angle=45,hjust=1),
+      plot.title = element_text(hjust=0.5)) + 
+scale_fill_distiller(palette = 'RdYlBu') + 
+coord_flip() ## coordinate flip bar == > barh 
+
+
+#############
+
+
+### Most popular genre per year
+
+popular_genre_per_year = df %>% group_by(Year,Genre) %>% 
+                         summarise(GlobalSales = sum(Global_Sales)) %>%
+                         arrange(desc(GlobalSales)) %>%
+                         arrange(Year) %>% top_n(1)
+
+ggplot(data = popular_genre_per_year , 
+       aes(x = Year, y = GlobalSales,fill=Genre)) +
+geom_bar(colour='black',stat='identity') +
+ggtitle('Most popular genre per year') +
+theme_bw() +
+theme(axis.text.x = element_text(angle=45,hjust=1),
+      plot.title = element_text(hjust=.5)) +
+scale_fill_brewer(palette = 'RdYlBu')
+
+
+#########
+
+
+
+
+
 
 
 
