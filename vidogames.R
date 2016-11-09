@@ -144,6 +144,78 @@ scale_fill_brewer(palette = 'RdYlBu')
 
 #########
 
+### Platform per year
+
+platform = df %>% group_by(Platform,Year) %>%
+           summarize(TotalSales = sum(Global_Sales)) %>%
+           arrange(desc(TotalSales))
+
+ggplot(data=platform,aes(x = Year,y=TotalSales,colour=Platform,group=Platform)) + 
+geom_line(size=.2) + 
+geom_point(size=.2)+
+ggtitle('Platform per year') + 
+theme_bw()+
+theme(axis.text.x = element_text(angle=45,hjust=1),
+      plot.title = element_text(hjust=0.5)) 
+
+
+
+###########
+
+##### Genre per year
+
+genre = df %>% group_by(Genre,Year) %>%
+        summarise(Total_Sales = sum(Global_Sales)) %>%
+        arrange(desc(Total_Sales))
+ggplot(data=genre,aes(x = Year, y = Total_Sales, colour=Genre, group=Genre)) + 
+geom_line(size=.2) + 
+geom_point(size=.2)+
+ggtitle('Genre per year') + 
+theme_bw() + 
+theme(axis.text.x = element_text(angle=45,hjust=1) ,
+      plot.title = element_text(hjust=.5)) 
+
+
+
+
+############
+
+
+
+##### Most popular game per year
+
+df %>% group_by(Year) %>% 
+               arrange(desc(Global_Sales)) %>%
+               top_n(1) %>%
+               ggplot(aes(x = Name,y = Global_Sales , fill = Year)) + 
+               geom_bar(stat = 'identity' , colour='black') + 
+               ggtitle('Most popular per year' ) + 
+               theme_bw() + 
+               theme(axis.text.x = element_text(angle=45,hjust=1),
+                     plot.title = element_text(hjust=.5)) +
+               coord_flip()
+               
+
+################
+
+
+##### Genre Distribution per year
+
+# https://learnr.wordpress.com/2010/01/26/ggplot2-quick-heatmap-plotting/
+platform_per_year = df %>% group_by(Platform,Year) %>% summarise(Count = n()) %>% arrange(Year)
+ggplot(data = platform_per_year , aes(x = Platform , y = Year)) +
+geom_tile(aes(fill=Count),colour='white') + 
+theme(axis.text.x = element_text(angle=90,hjust=1),
+      plot.title = element_text(hjust=.5)) +
+ggtitle('Gener Distribution per year') + 
+scale_fill_gradient(low='white',high='blue') +
+scale_x_discrete(expand=c(0,0))
+
+
+#################
+
+
+
 
 
 
